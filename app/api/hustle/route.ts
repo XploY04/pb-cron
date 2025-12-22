@@ -137,7 +137,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Debug: Log markdown sample to understand format
+    console.log("Contest markdown sample (first 1000 chars):", scrapeResult2.markdown.substring(0, 1000));
+    
     const contestDetails = parseContestData(scrapeResult2.markdown);
+    
+    console.log("Parsed participants count:", contestDetails.participants.length);
+    if (contestDetails.participants.length === 0) {
+      console.log("No participants found. Full markdown:", scrapeResult2.markdown.substring(0, 3000));
+    }
 
     const latest: ContestRanking[] = contestDetails.participants.map(
       (user, index) => ({
