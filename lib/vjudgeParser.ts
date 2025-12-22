@@ -47,33 +47,26 @@ export function parseVJudgeContests(markdown: string): VJudgeContest[] {
 
     for (const row of rows) {
       try {
-        // Extract columns from the row
-        const columns = row
-          .split("|")
-          .map((col) => col.trim())
-          .filter(Boolean);
+        const columns = row.split("|").map((col) => col.trim());
 
-        // Ensure we have enough columns before accessing them
-        if (columns.length >= 6) {
-          const id = columns[0] || "";
+        if (columns.length >= 8) {
+          const id = columns[1] || "";
 
-          // Extract title - remove the Markdown link syntax if present
-          const title = extractTextFromMarkdown(columns[2]);
+          const title = extractTextFromMarkdown(columns[3]);
 
-          // Extract begin time - find the date pattern in the string
+          // Extract begin time - find the date pattern in the string (column 5)
           let beginTime = "";
-          if (columns[4]) {
-            const dateMatch = columns[4].match(
+          if (columns[5]) {
+            const dateMatch = columns[5].match(
               /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/
             );
-            beginTime = dateMatch ? dateMatch[1] : columns[4];
+            beginTime = dateMatch ? dateMatch[1] : columns[5];
           }
 
-          const length = columns[5] || "";
+          const length = columns[6] || "";
 
-          // Safely extract owner using the helper function
-          const owner =
-            columns.length > 6 ? extractTextFromMarkdown(columns[6]) : "";
+          
+          const owner = extractTextFromMarkdown(columns[7]);
 
           contests.push({
             id,
@@ -83,7 +76,7 @@ export function parseVJudgeContests(markdown: string): VJudgeContest[] {
             owner,
           });
         } else {
-          console.warn(`Skipping row with insufficient columns: ${row}`);
+          console.warn(`Skipping row with insufficient columns (${columns.length}): ${row}`);
         }
       } catch (rowError) {
         console.error("Error processing row:", rowError);
