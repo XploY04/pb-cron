@@ -196,4 +196,4 @@ Contributions are welcome. Please ensure code follows the project's ESLint confi
 
 ## License
 
-This project does not currently have a specified license. Please contact the repository owner for usage permissions.
+MIT License
