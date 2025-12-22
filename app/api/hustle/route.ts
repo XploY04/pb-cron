@@ -52,9 +52,13 @@ interface LeaderboardData {
 //     return NextResponse.json({ message: "Leaderboard update initiated." }, { status: 200 });
 // }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
     await connectMongoDB();
+
+    // Check for force refresh parameter
+    const url = new URL(request.url);
+    const forceRefresh = url.searchParams.get("force") === "true";
 
     // Use FireCrawl to scrape contest data from VJudge
     const app = new FireCrawlApp({
@@ -104,11 +108,15 @@ export async function POST() {
     const existingData = leaderboardDoc as LeaderboardData | undefined;
     const lastContestCode = existingData?.lastContestCode;
 
-    if (Number(lastContestCode) == Number(latestContestId)) {
+    if (Number(lastContestCode) == Number(latestContestId) && !forceRefresh) {
       console.log("Leaderboard is already up-to-date.");
       return NextResponse.json({
         message: "Leaderboard is already up-to-date.",
       });
+    }
+
+    if (forceRefresh) {
+      console.log("Force refresh enabled, updating leaderboard...");
     }
 
     const scrapeResult2 = await app.scrapeUrl(
