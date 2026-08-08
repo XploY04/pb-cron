@@ -4,7 +4,7 @@ A competitive programming leaderboard system that tracks and displays contest re
 
 ## Overview
 
-PB Hustle is Next.js-based web application designed to manage and display programming contest leaderboards. It integrates with VJudge to automatically fetch contest results, calculate cumulative scores, and present rankings through an intuitive user interface.
+PB Hustle is a Next.js-based web application designed to manage and display programming contest leaderboards. It integrates with VJudge to automatically fetch contest results, calculate cumulative scores, and present rankings through an intuitive user interface.
 
 ## Features
 
